@@ -1,7 +1,7 @@
 <template>
   <v-flex>
     <div class="text-xs-center"
-         v-if="posts.length">
+         v-show="posts.length">
       <v-pagination v-model="page"
                     :length="length || 1"
                     circle
