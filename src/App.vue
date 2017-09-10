@@ -6,7 +6,8 @@
     <alerts />
     <loader v-if="$store.state.loading" />
     <v-toolbar>
-      <v-toolbar-title>DevJS Test | {{ $route.name }} page</v-toolbar-title>
+      <v-toolbar-title>DevJS Test | {{ $route.name.charAt(0).toUpperCase() + $route.name.slice(1) }} page</v-toolbar-title>
+      <v-spacer />
       <v-btn icon
              @click="dark = !dark">
         <v-icon>{{ dark ? 'wb_sunny' : 'brightness_3'}}</v-icon>
@@ -51,22 +52,3 @@ export default {
   }
 };
 </script>
-
-<style>
-nav {
-  text-transform: capitalize;
-}
-
-.right-top {
-  position: absolute;
-  right: 15px;
-  top: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.relative {
-  position: relative;
-}
-</style>

@@ -1,5 +1,20 @@
 <template>
-  <v-flex class="relative">
+  <v-flex>
+    <template v-if="post">
+      <v-spacer />
+      <v-btn icon
+             @click="showPostEditForm = true">
+        <i class="material-icons">create</i>
+      </v-btn>
+      <v-btn icon
+             @click="deletePost(post.id)">
+        <i class="material-icons">delete</i>
+      </v-btn>
+    </template>
+    <v-btn icon
+           @click="close">
+      <i class="material-icons">close</i>
+    </v-btn>
     <h2>Post</h2>
     <div v-if="post">
       <p v-if="author">Author: {{ author.name }}</p>
@@ -35,22 +50,6 @@
     </div>
     <div v-else>
       <h3>Not found</h3>
-    </div>
-    <div class="right-top">
-      <template v-if="post">
-        <v-btn icon
-               @click="showPostEditForm = true">
-          <i class="material-icons">create</i>
-        </v-btn>
-        <v-btn icon
-               @click="deletePost(post.id)">
-          <i class="material-icons">delete</i>
-        </v-btn>
-      </template>
-      <v-btn icon
-             @click="close">
-        <i class="material-icons">close</i>
-      </v-btn>
     </div>
     <modal v-if="showPostEditForm"
            @submit="submitPostEditForm"

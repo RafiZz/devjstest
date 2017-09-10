@@ -1,11 +1,15 @@
 <template>
   <v-flex>
-    <div class="text-xs-center"
-         v-show="posts.length">
+    <v-text-field label="Search"
+                  v-model="search"
+                  prepend-icon="search"
+                  single-line />
+    <v-flex class="text-xs-center"
+            v-show="posts.length">
       <v-pagination v-model="page"
                     :length="length || 1"
                     circle />
-    </div>
+    </v-flex>
     <modal v-if="showPostCreateForm"
            @submit="onSubmit"
            @cancel="showPostCreateForm = false"
@@ -14,16 +18,6 @@
             slot="headline">Create Post</span>
       <post-form slot="body" />
     </modal>
-    <div class="right-top">
-      <v-text-field label="Search"
-                    v-model="search"
-                    prepend-icon="search"
-                    single-line />
-      <v-btn icon
-             @click="fetchPosts">
-        <i class="material-icons">refresh</i>
-      </v-btn>
-    </div>
     <v-list two-line
             v-if="posts.length">
       <transition-group name="slide-x-transition"
