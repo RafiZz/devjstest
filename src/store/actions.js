@@ -1,4 +1,8 @@
-import axios from '@/api';
+import { axios, apiCases } from '@/api';
+
+const postsApi = apiCases('posts');
+const commentsApi = apiCases('comments');
+const usersApi = apiCases('users');
 
 // 'axios.delete('/posts/520')' will return error (404 Not found)
 // but post with id === 520 can be in our store
@@ -25,7 +29,7 @@ export default {
   async fetchPosts({ commit, dispatch }) {
     commit('SHOW_LOADER');
     try {
-      const response = await axios.get('/posts');
+      const response = await axios(postsApi.getAll);
       commit('SET_POSTS', response.data);
       dispatch('alert', response);
     } catch ({ message, response }) {
@@ -36,7 +40,7 @@ export default {
   async fetchComments({ commit, dispatch }) {
     commit('SHOW_LOADER');
     try {
-      const response = await axios.get('/comments');
+      const response = await axios(commentsApi.getAll);
       commit('SET_COMMENTS', response.data);
       dispatch('alert', response);
     } catch ({ message, response }) {
@@ -47,7 +51,7 @@ export default {
   async fetchUsers({ commit, dispatch }) {
     commit('SHOW_LOADER');
     try {
-      const response = await axios.get('/users');
+      const response = await axios(usersApi.getAll);
       commit('SET_USERS', response.data);
       dispatch('alert', response);
     } catch ({ message, response }) {
@@ -59,10 +63,7 @@ export default {
     commit('SHOW_LOADER');
     try {
       const isNewPost = id > 100;
-      const req = {
-        method: 'delete',
-        url: `/posts/${id}`
-      };
+      const req = postsApi.delete(id);
       const response = !isNewPost
         ? await axios(req)
         : fakeResponse({ ...req, status: 201 });
@@ -77,10 +78,7 @@ export default {
     commit('SHOW_LOADER');
     try {
       const isNewComment = +id > 500;
-      const req = {
-        method: 'delete',
-        url: `/comments/${id}`
-      };
+      const req = commentsApi.delete(id);
       const response = !isNewComment
         ? await axios(req)
         : fakeResponse({ ...req, status: 201 });
@@ -94,11 +92,7 @@ export default {
   editPost({ commit, dispatch }, post) {
     commit('SHOW_LOADER');
     const isNewPost = post.id > 100;
-    const req = {
-      method: 'put',
-      url: `/posts/${post.id}`,
-      data: post
-    };
+    const req = postsApi.update(post.id, post);
     if (isNewPost) {
       const response = fakeResponse({ ...req, status: 200 });
       return new Promise(resolve => {
@@ -126,8 +120,7 @@ export default {
   createPost({ commit, dispatch }, post) {
     commit('SHOW_LOADER');
     return new Promise((resolve, reject) => {
-      axios
-        .post('/posts', post)
+      axios(postsApi.create(post))
         .then(response => {
           commit('SET_POST', response.data);
           commit('LAST_POST_ID_INCREMENT');
@@ -145,11 +138,7 @@ export default {
   editComment({ commit, dispatch }, comment) {
     commit('SHOW_LOADER');
     const isNewComment = comment.id > 500;
-    const req = {
-      method: 'put',
-      url: `/comments/${comment.id}`,
-      data: comment
-    };
+    const req = commentsApi.update(comment.id, comment);
     if (isNewComment) {
       const response = fakeResponse({ ...req, status: 200 });
       return new Promise(resolve => {
@@ -160,8 +149,7 @@ export default {
       });
     }
     return new Promise((resolve, reject) => {
-      axios
-        .put(`/comments/${comment.id}`, comment)
+      axios(req)
         .then(response => {
           commit('SET_COMMENT', response.data);
           dispatch('alert', response);
@@ -178,8 +166,7 @@ export default {
   createComment({ commit, dispatch }, comment) {
     commit('SHOW_LOADER');
     return new Promise((resolve, reject) => {
-      axios
-        .post('/comments', comment)
+      axios(commentsApi.create(comment))
         .then(response => {
           commit('SET_COMMENT', response.data);
           commit('LAST_COMMENT_ID_INCREMENT');

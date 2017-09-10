@@ -4,8 +4,7 @@
          v-show="posts.length">
       <v-pagination v-model="page"
                     :length="length || 1"
-                    circle
-                    class="ma1" />
+                    circle />
     </div>
     <modal v-if="showPostCreateForm"
            @submit="onSubmit"

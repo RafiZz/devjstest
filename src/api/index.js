@@ -1,6 +1,2 @@
-import axios from 'axios';
-
-const options = {};
-options.baseURL = 'https://jsonplaceholder.typicode.com';
-
-export default axios.create(options);
+export { default as axios } from './axios';
+export { default as apiCases } from './apiCases';
