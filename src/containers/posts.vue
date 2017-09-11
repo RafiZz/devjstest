@@ -4,10 +4,9 @@
                   v-model="search"
                   prepend-icon="search"
                   single-line />
-    <v-flex class="text-xs-center"
-            v-show="posts.length">
+    <v-flex v-show="posts.length">
       <v-pagination v-model="page"
-                    :length="length || 1"
+                    :length="length"
                     circle />
     </v-flex>
     <modal v-if="showPostCreateForm"
